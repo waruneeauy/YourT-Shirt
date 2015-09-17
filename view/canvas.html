@@ -1,0 +1,403 @@
+﻿<!DOCTYPE html>
+<html  lang="en" ng-app="kitchensink" >
+<head>
+    <meta charset="utf-8">
+
+    <title>YourTshirt.design : Design</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta name="keywords" content="design shirt, design tshirt, create, screen printing, ออกแบบเสื้อ, สร้างสรรค์" />
+    <meta name="description" content="YourTshirt.design เป็นเครื่องมือช่วยให้การออกแบบเสื้อยืดตามสไตด์ของคุณด้วยวิธีง่ายๆ มี collection มากมายให้คุณเลือก ทุก collection ออกแบบโดยดีไซน์เนอร์อิสระที่มีแนวความคิดที่สร้างสรรค์" />
+    <meta name="author" content="yourtshirt.design" />
+    <meta name="robots" content="noindex" /> 
+
+    <link rel="shortcut icon" href="icons/icon.ico" />
+    <link rel="stylesheet" type="text/css" href="../style/style.css" />
+    <link rel="stylesheet" type="text/css" href="../style/style_button.css" />
+    <link rel="stylesheet" type="text/css" href="../style/tooltip.css" />
+    <link rel="stylesheet" href="../css/master.css">
+    <link rel="stylesheet" href="../css/prism.css">
+    
+    <link rel="stylesheet" href="../css/bootstrap.css">
+    <link rel="stylesheet" href="../css/kitchensink.css">
+    <link rel="stylesheet" href="../css/canvas.css">
+    <!--[if lt IE 9]>
+      <script src="../lib/excanvas.js"></script>
+    <![endif]-->
+    <!--[if IE]><script src="../lib/fonts/Delicious.font.js"></script><![endif]-->
+    <!--	<script src="../lib/jquery.js"></script>
+        <script src="../lib/bootstrap.js"></script>
+    -->
+
+    <script type="text/javascript" src="../js/jquery.min.js"></script>
+    <script type="text/javascript" src="../js/jquery-ui.min.js"></script>
+    <script type="text/javascript" src="../js/vendors/jquery.slimscroll.min.js"></script>
+    <script type="text/javascript" src="../js/jquery.fullPage.js"></script>
+    <script type="text/javascript" src="../controller/design.js"></script>
+    <!--<script src="../js/angular.min.js"></script>-->
+    <!-- Add CDN angular -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.3.16/angular.min.js"></script>
+
+    <!-- Add CDN parse -->
+    <script src="//www.parsecdn.com/js/parse-1.4.2.min.js"></script>
+
+    <script type="text/javascript">
+        window.onbeforeunload = function () {
+            return "Data will be lost if you leave the page, are you sure?";
+        };
+
+        (function () {
+            var fabricUrl = '../lib/fabric.js';
+            if (document.location.search.indexOf('load_fabric_from=') > -1) {
+                var match = document.location.search.match(/load_fabric_from=([^&]*)/);
+                if (match && match[1]) {
+                    fabricUrl = match[1];
+                }
+            }
+            document.write('<script src="' + fabricUrl + '"><\/script>');
+        })();
+
+        //function download() {
+        //    //var dataURL = canvas.toDataURL('image/png');
+        //    //button.href = dataURL;
+        //    var canvas = document.getElementById('canvas');
+        //    alert(JSON.stringify(canvas.toDatalessJSON));
+        //    console.log(JSON.stringify(canvas.toDatalessJSON));
+            
+        //}
+    </script>
+
+</head>
+<body>
+    <div class="menu-bar">
+        <ul id="menu">
+            <li class="txt-logo">YourTshirt.design</li>
+            <li data-menuanchor="home" class="border-right"><a href="index.html">Home</a></li>
+            <li data-menuanchor="design" class="border-right active"><a href="index.html#design">Design</a></li>
+            <li data-menuanchor="sipping" class="border-right"><a href="index.html#sipping">Sipping</a></li>
+            <li data-menuanchor="payment" class="border-right"><a href="index.html#payment">Payment</a></li>
+            <li data-menuanchor="contactus"><a href="index.html#contactus">Contact US</a></li>
+            <li class="menu-right"><a href="designercorner.html" data-tooltip="Designer Corner">Designer Corner</a></li>
+            <li class="menu-right border-right login"><a href="login.html" data-tooltip="Login">Login</a></li>
+        </ul>
+    </div>
+
+    <div id="myContainer">
+        <div class="position-design" ng-controller="CanvasControls as canvasCtrl">
+
+            <div id="tab-left">
+                <input type="hidden" name="view" id="view" value="front" autocomplete="off" />
+                <input type="hidden" name="code" id="code" value="white" autocomplete="off" />
+                <h5>Choose Product</h5>
+                <ul class="design-product">
+                    <li id="chooseProduct1" title="T-shirt">T-shirt</li>
+                    <li id="chooseProduct2" title="Polo-shirt">Polo-shirt</li>
+                </ul>
+                <div class="clear"></div>
+
+                <h5>Color</h5>
+                <ul class="design-color">
+                    <li onclick="colors('white',$('#view').val());" title="white"></li>
+                    <li onclick="colors('grey',$('#view').val());" id="grey" title="grey"></li>
+                    <li onclick="colors('black',$('#view').val());" id="black" title="black"></li>
+                </ul>
+                <div class="clear"></div>
+
+                <div class="view-click-back" onclick="changeview('back');">
+                    <div class="txt-view">View Back </div><div class="back-logo"></div>
+                    <div class="clear"></div>
+                </div>
+                <div class="view-click-front" onclick="changeview('front');">
+                    <div class="txt-view">View Front </div><div class="front-logo"></div>
+                    <div class="clear"></div>
+                </div>
+
+                <h5>Add Text</h5>
+                <div class="canvas-front">
+                    <input type="text" name="txt-insert" bind-value-to="text" id="text-word-show" value="" />
+                    <a class="btn" onclick="addTexts($('#text-word-show').val());" ng-click="addTexts();">Add Text</a>
+                    <div id="text-wrapper" class="ng-hide" ng-show="getText()">
+                        <div>
+                            <label for="color">Color: </label>
+                            <input type="color" style="width:40px" bind-value-to="fill">
+                        </div>
+
+                        <div>
+                            <label for="font-family" style="display:inline-block">Font family:</label>
+                            <select id="font-family" class="btn-object-action" bind-value-to="fontFamily">
+                                <option value="arial">Arial</option>
+                                <option value="helvetica" selected>Helvetica</option>
+                                <option value="myriad pro">Myriad Pro</option>
+                                <option value="delicious">Delicious</option>
+                                <option value="verdana">Verdana</option>
+                                <option value="georgia">Georgia</option>
+                                <option value="courier">Courier</option>
+                                <option value="comic sans ms">Comic Sans MS</option>
+                                <option value="impact">Impact</option>
+                                <option value="monaco">Monaco</option>
+                                <option value="optima">Optima</option>
+                                <option value="hoefler text">Hoefler Text</option>
+                                <option value="plaster">Plaster</option>
+                                <option value="engagement">Engagement</option>
+                            </select>
+                        </div>
+
+                        <div>
+                            <label for="text-font-size">Font size:</label>
+                            <input type="range" value="" min="1" max="120" step="1" id="text-font-size" class="btn-object-action" bind-value-to="fontSize">
+                        </div>
+
+                        <div>
+                            <label for="text-bg-color">Background color:</label>
+                            <input type="color" value="" id="text-bg-color" size="10" class="btn-object-action"
+                                   bind-value-to="bgColor">
+                        </div>
+
+                        <div>
+                            <label for="text-stroke-color">Stroke color:</label>
+                            <input type="color" value="" id="text-stroke-color" class="btn-object-action" bind-value-to="strokeColor" />
+                            <input type="range" value="1" min="1" max="5" id="text-stroke-width" class="btn-object-action" bind-value-to="strokeWidth">
+                        </div>
+
+                        <div>
+                            <button type="button" class="btn btn-object-action"
+                                    ng-click="toggleBold()"
+                                    ng-class="{'btn-inverse': isBold()}">
+                                Bold
+                            </button>
+                            <button type="button" class="btn btn-object-action" id="text-cmd-italic"
+                                    ng-click="toggleItalic()"
+                                    ng-class="{'btn-inverse': isItalic()}">
+                                Italic
+                            </button>
+                            <button type="button" class="btn btn-object-action" id="text-cmd-underline"
+                                    ng-click="toggleUnderline()"
+                                    ng-class="{'btn-inverse': isUnderline()}">
+                                Underline
+                            </button>
+                            <button type="button" class="btn btn-object-action" id="text-cmd-linethrough"
+                                    ng-click="toggleLinethrough()"
+                                    ng-class="{'btn-inverse': isLinethrough()}">
+                                Linethrough
+                            </button>
+                            <button type="button" class="btn btn-object-action" id="text-cmd-overline"
+                                    ng-click="toggleOverline()"
+                                    ng-class="{'btn-inverse': isOverline()}">
+                                Overline
+                            </button>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+
+            <div id="shirt-position">
+                <canvas id="canvas" width="250" height="450"></canvas>
+                <div class=" clear"></div>
+                <div class="tool-control">
+                    <div class="remove-object" title="Remove object" ng-click="removeSelected()"></div>
+                    <div class="clear-canvas" title="Clear object" ng-click="confirmClear()"></div>
+
+                    <div class="save-design" title="Save design" ng-click="canvasCtrl.saveCanvas()"></div>
+                    <div class=" clear"></div>
+                    <div style="margin-top:10px;">
+                        <button id="send-to-back" class="btn btn-object-action" ng-click="sendToBack()">Send to back</button>
+                        <button id="bring-to-front" class="btn btn-object-action" ng-click="bringToFront()">Bring to front</button>
+                    </div>
+
+                </div>
+            </div>
+
+
+            <!--Collection--> 
+            <div ng-controller="CollectionController as colCtrl" id="mainCollectionArea">
+                <h5>Collection $http call by {{colCtrl.test1}}{{colCtrl.test2}}</h5>
+                <div class="txt-view">search term: new, popular, trending</div>
+                    
+                <select ng-model="colCtrl.searchSelection">
+                    <option>All</option>
+                    <option>Popular</option>
+                    <option>New</option>
+                    <option>Trending</option>
+
+                </select>
+
+                <input type="text" ng-model="colCtrl.searchText" />
+                <input type="button" value="search" ng-click="colCtrl.startSearch()" />
+
+                <div ng-hide="colCtrl.isShowDetail" class="collectionDisplayArea">
+                    <div ng-hide="colCtrl.collectionDataArray.length">No result found for "{{colCtrl.searchResultText}}".</div>
+                    <div ng-repeat="collection in colCtrl.collectionDataArray" ng-click="colCtrl.showDetail(collection)" class="eachCollectionArea">
+                        <h5 class="collectionHeader">{{collection.collectionName}} by {{collection.designerName}}</h5>
+                        
+                        <img ng-src="{{collection.imagePreview1.url}}" class="previewThumbnail" />
+                        <img ng-src="{{collection.imagePreview2.url}}" class="previewThumbnail" />
+                        <img ng-src="{{collection.imagePreview3.url}}" class="previewThumbnail" />
+                        <p id="more-dots">...</p>
+                    </div>
+                </div>
+
+                <div ng-show="colCtrl.isShowDetail" class="collectionDisplayArea">
+
+                    <h5 class="collectionHeader">{{colCtrl.detailedCollectionName}}</h5>
+                    <button ng-click="colCtrl.backToList()" id="backButton">Back</button><br />
+
+                    <img ng-repeat="design in colCtrl.collectionDetailArray" ng-src="{{design.imageFile.url}}" class="imageThumbnail" ng-click="colCtrl.addImageFromCollection(design)" />
+                    <br />
+                    <p ng-show="colCtrl.moreDesignArray.length" class="collectionHeader moreDesignHeader">More design by {{colCtrl.selectedCollectionDesigner}}</>
+                    <br />
+                    <img ng-repeat="moreDesign in colCtrl.moreDesignArray" ng-src="{{moreDesign.imageFile.url}}" class="imageThumbnail" ng-click="colCtrl.addImageFromCollection(moreDesign)" />
+
+                </div>
+
+            </div>
+
+            <!--for testing shirtt design by user-->
+            <div ng-controller="CollectionController as colCtrl" ng-show="shirtDesignArray.length">
+                <img ng-repeat="shirtDesign in shirtDesignArray" ng-src="{{shirtDesign.testSVG.url}}" ng-click="colCtrl.loadToCanvas(shirtDesign)" />
+
+            </div>
+
+
+
+            <div class="clear"></div>
+
+        </div>
+
+
+
+        
+    </div>
+
+    <script type="text/javascript">
+        var kitchensink = {};
+        var canvas = new fabric.Canvas('canvas');
+    </script>
+
+    <script type="text/javascript" src="../js/kitchensink/utils.js"></script>
+    <script type="text/javascript" src="../js/kitchensink/app_config.js"></script>
+    <script type="text/javascript" src="../js/kitchensink/controller.js"></script>
+
+    <script type="text/javascript">
+
+        (function () {
+
+            if (document.location.hash !== '#zoom') return;
+
+            function renderVieportBorders() {
+                var ctx = canvas.getContext();
+
+                ctx.save();
+
+                ctx.fillStyle = 'rgba(0,0,0,0.1)';
+
+                ctx.fillRect(
+                  canvas.viewportTransform[4],
+                  canvas.viewportTransform[5],
+                  canvas.getWidth() * canvas.getZoom(),
+                  canvas.getHeight() * canvas.getZoom());
+
+                ctx.setLineDash([5, 5]);
+
+                ctx.strokeRect(
+                  canvas.viewportTransform[4],
+                  canvas.viewportTransform[5],
+                  canvas.getWidth() * canvas.getZoom(),
+                  canvas.getHeight() * canvas.getZoom());
+
+                ctx.restore();
+            }
+
+            $(canvas.getElement().parentNode).on('mousewheel', function (e) {
+
+                var newZoom = canvas.getZoom() + e.deltaY / 300;
+                canvas.zoomToPoint({ x: e.offsetX, y: e.offsetY }, newZoom);
+
+                renderVieportBorders();
+
+                return false;
+            });
+
+            var viewportLeft = 0,
+                viewportTop = 0,
+                mouseLeft,
+                mouseTop,
+                _drawSelection = canvas._drawSelection,
+                isDown = false;
+
+            canvas.on('mouse:down', function (options) {
+                isDown = true;
+
+                viewportLeft = canvas.viewportTransform[4];
+                viewportTop = canvas.viewportTransform[5];
+
+                mouseLeft = options.e.x;
+                mouseTop = options.e.y;
+
+                if (options.e.altKey) {
+                    _drawSelection = canvas._drawSelection;
+                    canvas._drawSelection = function () { };
+                }
+
+                renderVieportBorders();
+            });
+
+            canvas.on('mouse:move', function (options) {
+                if (options.e.altKey && isDown) {
+                    var currentMouseLeft = options.e.x;
+                    var currentMouseTop = options.e.y;
+
+                    var deltaLeft = currentMouseLeft - mouseLeft,
+                        deltaTop = currentMouseTop - mouseTop;
+
+                    canvas.viewportTransform[4] = viewportLeft + deltaLeft;
+                    canvas.viewportTransform[5] = viewportTop + deltaTop;
+
+                    canvas.renderAll();
+                    renderVieportBorders();
+                }
+            });
+
+            canvas.on('mouse:up', function () {
+                canvas._drawSelection = _drawSelection;
+                isDown = false;
+            });
+        })();
+
+    </script>
+
+
+
+    <script type="text/javascript">
+        (function () {
+            var mainScriptEl = document.getElementById('main');
+            if (!mainScriptEl) return;
+            var preEl = document.createElement('pre');
+            var codeEl = document.createElement('code');
+            codeEl.innerHTML = mainScriptEl.innerHTML;
+            codeEl.className = 'language-javascript';
+            preEl.appendChild(codeEl);
+            document.getElementById('bd-wrapper').appendChild(preEl);
+        })();
+    </script>
+
+    <script type="text/javascript">
+        (function () {
+            fabric.util.addListener(fabric.window, 'load', function () {
+                var canvas = this.__canvas || this.canvas,
+                    canvases = this.__canvases || this.canvases;
+
+                canvas && canvas.calcOffset && canvas.calcOffset();
+
+                if (canvases && canvases.length) {
+                    for (var i = 0, len = canvases.length; i < len; i++) {
+                        canvases[i].calcOffset();
+                    }
+                }
+            });
+        })();
+    </script>
+
+
+</body>
+</html>
